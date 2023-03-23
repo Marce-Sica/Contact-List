@@ -11,7 +11,7 @@ const ContactList = () => {
     return (
         <>
             <div className="container w-75">
-                <div className="d-flex justify-content-end mt-3 mb-3">
+                <div className="d-flex justify-content-start mt-3 mb-3">
                     <Link to="/add-contact"><button type="button" className="btn btn-success mt-3">Añadir contacto</button></Link>
                 </div>
                 <ContactCard />
