@@ -1,7 +1,19 @@
-/*
-    home.css: This website contains selectors only used in home.css
+@media (max-width: 1340px){
+    .icon {
+        margin-left: -5rem;
+    }
+}
 
-    All pages share the styles on index.css but you should create 
-    one more css for each page that will contain the selected used 
-    on that page only (the ones not reused in other pages).
-*/
+@media (max-width: 880px){
+    .icon {
+        position: relative;
+        margin-top: 100px;
+    }
+}
+
+@media (max-width: 700px){
+    .icon {
+        position: relative;
+        left: 5.5rem;
+    }
+}

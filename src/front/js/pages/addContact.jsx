@@ -4,41 +4,68 @@ import { Link } from "react-router-dom";
 
 const AddContact = () => {
     const { store, actions } = useContext(Context)
-    const [data, setData] = useState({})
 
-    useEffect(() => { }, [data.full_name, data.phone, data.email])
+    return (<div className="container mt-5 bg-secondary p-3 rounded">
+        <div className="d-flex justify-content-center text-white">
+            <h1>Añadir contacto</h1>
+        </div>
+        <form className="row g-3">
+            <div className="col-md-6">
+                <label for="full-name" className="form-label text-white">Nombre completo:</label>
+                <input type="text" className="form-control" id="full-name" name="full-name" placeholder="Ingrese su nombre completo" />
+            </div>
+            <div className="col-md-6">
+                <label for="email" className="form-label text-white">Email:</label>
+                <input type="email" className="form-control" id="email" name="email" placeholder="Ingrese su email" />
+            </div>
+            <div className="col-12">
+                <label for="address" className="form-label text-white">Domicilio:</label>
+                <input type="text" className="form-control" id="address" name="address" placeholder="Ingrese su dirección" />
+            </div>
+            <div className="col-md-6">
+                <label for="phone" className="form-label text-white">Número de teléfono:</label>
+                <input type="tel" className="form-control" id="phone" name="phone" placeholder="Ingrese su número de teléfono" />
+            </div>
+            <div className="col-md-12 d-flex align-items-end justify-content-center">
+                <button type="button" className="btn btn-primary w-50 mt-4" onClick={async () => {
+                    const full_name = document.getElementById("full-name").value;
+                    const email = document.getElementById("email").value;
+                    const phone = document.getElementById("phone").value;
+                    const address = document.getElementById("address").value;
 
-    return (<div>Aquí debería agregar contactos nuevos
-        <br />
-        <Link to="/">Regresar a lista de contactos</Link>
-        <br />
-        <input placeholder="Agregue el nombre del contacto" name="nombre" onChange={(e) => { setData({ ...data, full_name: e.target.value }) }} />
-        <input placeholder="Agregue nuúmero de teléfono" name="tlf" onChange={(e) => { setData({ ...data, phone: e.target.value }) }} />
-        <input placeholder="Agregue correo" name="correo" onChange={(e) => { setData({ ...data, email: e.target.value }) }} />
+                    const newContact = {
+                        full_name,
+                        email,
+                        phone,
+                        address,
+                        agenda_slug: "agenda_de_marce",
+                    };
+                    let { respuestaJson, response } = await actions.useFetch("/apis/fake/contact/", newContact, "POST")
+                    if (response.ok) {
+                        console.log(response)
+                        alert("Contacto cargado con éxito!")
+                        
+                    }
+                    else {
+                        alert("Error! datos ingresados incorrectamente");
+                        return;
+                    }
+
+                    
+
+                    
+
+                    document.getElementById("full-name").value = "";
+                    document.getElementById("email").value = "";
+                    document.getElementById("phone").value = "";
+                    document.getElementById("address").value = "";
+                }}>Añadir</button>
+                <Link to="/" ><button type="button" className="btn btn-danger ms-3">Ir atrás</button></Link>
+            </div>
 
 
-        <button type="button" onClick={() => {
-            actions.addContact(data)
-        }}>Agregar Contacto a la Agenda</button>
+        </form>
 
-        <br />
-        <button onClick={async () => {
-            let { respuestaJson, response } = await actions.useFetch("/apis/fake/contact/",
-                {
-                    full_name: data.full_name,
-                    email: data.email,
-                    agenda_slug: "agenda_de_antonio",
-                    address: "47568 NW 34ST, 33434 FL, USA",
-                    phone: data.phone
-                },
-                "POST"
-            )
-            if (!response.ok) {
-                alert("No se registró el contacto")
-                return
-            }
-            console.log("Contacto creado: \n", respuestaJson)
-        }}>Boton con fetch</button>
     </div>)
 }
 

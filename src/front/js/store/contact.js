@@ -1,101 +1,60 @@
+import Swal from "sweetalert2";
+
 export const contactStore = {
-    listaContactos: [{
-        full_name: "Dave Bradley",
-        email: "dave@gmail.com",
-        agenda_slug: "agenda_de_antonio",
-        address: "47568 NW 34ST, 33434 FL, USA",
-        phone: "7864445566"
-    }]
-}
+  listaContactos: [
+    {
+      full_name: "Dave Bradley",
+      email: "dave@gmail.com",
+      agenda_slug: "agenda_de_david",
+      address: "47568 NW 34ST, 33434 FL, USA",
+      phone: "7864445566",
+    },
+  ],
+};
 
 export function contactActions(getStore, getActions, setStore) {
-    return {
-        addContact: async (obj) => {
-            let store = getStore()
-            let arrTemp = store.listaContactos.slice()
+  return {
+    addContact: async (obj) => {
+      let store = getStore();
+      let arrTemp = store.listaContactos.slice();
 
-            arrTemp.push(obj)
-            setStore({ ...store, listaContactos: arrTemp })
+      arrTemp.push(obj);
+      setStore({ ...store, listaContactos: arrTemp });
 
-            return store.listaContactos;
-        },
-        deleteContact: (indice) => {
-            let store = getStore()
-            let arrTemp = store.listaContactos.filter((item, index) => {
-                return index != indice
-            })
-            setStore({ ...store, listaContactos: arrTemp })
-        },
-        editContact: (indice, nombre) => {
-            let store = getStore()
-            let arrTemp = store.listaContactos.slice()
-            arrTemp[indice]["full_name"] = nombre
+      return store.listaContactos;
+    },
 
-            setStore({ ...store, listaContactos: arrTemp })
+    deleteContact: async (index) => {
+      let store = getStore();
+      let arrTemp = store.listaContactos.slice();
 
-        },
-        peticionEjemplo: async () => {
-            let suma = 4
-            /* fetch("https://assets.breatheco.de/apis/fake/contact/agenda")
-                .then((promesa) => promesa.json() //puede tomar tiempo
-                )
-                .then((data1) => {
-                    console.log("response", data1)
-                    //return response
-                }).catch((error) => {
-                    console.log(error)
-                }) */
-
-            //2do método async-await en cascada
-            let respuesta = await fetch("https://assets.breatheco.de/apis/fake/contact/agenda")
-
-            if (respuesta.ok) {
-                console.log("buena respuesta")
-                let respuestaJSON = await respuesta.json() //proceso puede tomar tiempo
-                console.log(respuestaJSON)
-            } else {
-                console.log("mala respuesta")
-            }
-            //let respuesta2 = await fetch("https://assets.breatheco.de/apis/fake/contact/agenda")
-            //respuesta recibe una promesa
-            //console.log(respuesta.ok, respuesta.status)
-
-
-
-
-            //recibiendo respuestas en paralelo
-            /* let respuesta = fetch("https://assets.breatheco.de/apis/fake/contact/agenda")
-            let respuesta2 = fetch("https://assets.breatheco.de/apis/fake/contact/agenda")
-            let [a, b] = await Promise.all([respuesta, respuesta2]) //llegan en formato de promesa al mismo tiempo
-
-            let respuestaJSON = await a.json()  //pueden tomar tiempo
-            let respuestaJSON2 = await b.json() //pueden tomar tiempo
-            console.log(respuestaJSON)
- */
-        },
-        fetchPost: async () => {
-            //2do método async-await en cascada
-            let respuesta = await fetch("https://assets.breatheco.de/apis/fake/contact/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    full_name: "David",
-                    email: "david11@gmail.com",
-                    agenda_slug: "agenda_de_antonio",
-                    address: "47568 NW 34ST, 33434 FL, USA",
-                    phone: "7864445566"
-                })
-            })
-
-            /* if (!respuesta.ok) {
-                //cualquier cosa aquí
-                return
-            } */
-
-
-            let respuestaJSON = await respuesta.json()
-            console.log(respuestaJSON)
-
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          arrTemp.splice(index, 1);
+          setStore({ ...store, listaContactos: arrTemp });
+          Swal.fire("Deleted!", "The contact has been deleted.", "success");
         }
-    }
+      });
+
+      return store.listaContactos;
+    },
+
+    editContact: async (index, obj) => {
+      let store = getStore();
+      let arrTemp = store.listaContactos.slice();
+
+      arrTemp[index] = obj;
+      setStore({ ...store, listaContactos: arrTemp });
+
+      return store.listaContactos;
+    },
+  };
 }

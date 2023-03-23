@@ -9,9 +9,11 @@ import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
-
-import Contactos from "./pages/contacts.jsx";
+import Card from "./component/contactCard.jsx";
+import ContactList from "./pages/contacts.jsx";
 import AddContact from "./pages/addContact.jsx";
+import EditContact from "./pages/editContact.jsx";
+
 
 //create your first component
 const Layout = () => {
@@ -25,11 +27,16 @@ const Layout = () => {
                 <ScrollToTop>
                     <Navbar />
                     <Routes>
-                        <Route element={<Contactos />} path="/" />
-                        <Route element={<Demo />} path="/demo" />
+                        <Route element={<ContactList />} path="/" />
                         <Route element={<AddContact />} path="/add-contact" />
-                        <Route element={<h1>EStoy en la vista de 4Geeks</h1>} path="/4geeks" />
+                        <Route element={<EditContact />} path="/edit-contact/:contactID" />
+                        <Route element={<Demo />} path="/demo" />
+                        <Route
+                            element={<h1>Estoy en la vista de 4Geeks</h1>}
+                            path="/4geeks"
+                        />
                         <Route element={<Single />} path="/single/:thetitle" />
+
                         <Route element={<h1>Not found! 404</h1>} path="*" />
                     </Routes>
                     <Footer />
